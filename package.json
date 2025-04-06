@@ -1,0 +1,27 @@
+{
+  "name": "docsmcp",
+  "version": "0.0.1",
+  "description": "An example of a MCP server",
+  "bin": {
+    "docsmcp": "./dist/main.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "ci": "npm run build",
+    "prepublishOnly": "npm run ci",
+    "dev": "npx -y @modelcontextprotocol/inspector tsx ./src/main.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.8.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  }
+}
