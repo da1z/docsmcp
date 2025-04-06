@@ -13,7 +13,8 @@
     "build": "tsc",
     "ci": "npm run build",
     "prepublishOnly": "npm run ci",
-    "dev": "npx -y @modelcontextprotocol/inspector tsx ./src/main.ts"
+    "dev1": "tsx ./src/main.ts",
+    "dev": "npx -y @modelcontextprotocol/inspector tsx ./src/main.ts --source='Model Context Protocol (MCP)|https://modelcontextprotocol.io/llms-full.txt|This documentation provides comprehensive information about the Model Context Protocol (MCP), a standardized way for applications to provide context to LLMs.'"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.8.0",

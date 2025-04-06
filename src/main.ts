@@ -3,7 +3,26 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
 
-const honoDocsList = 'Hono js Documentation:https://hono.dev/llms.txt';
+// Define the type for documentation sources
+interface DocSource {
+  name: string;
+  url: string;
+  description: string;
+}
+
+const args = process.argv;
+const docSources: DocSource[] = [];
+args.forEach((arg) => {
+  if (arg.startsWith('--source=')) {
+    const sourceValue = arg.replace('--source=', '');
+
+    const [name, url, description = ''] = sourceValue.split('|');
+    if (!name || !url) {
+      throw new Error('Invalid source format ' + sourceValue);
+    }
+    docSources.push({ name, url, description });
+  }
+});
 
 const server = new McpServer({
   name: 'Documentation Service',
@@ -15,20 +34,21 @@ server.tool(
   'Provides a list of available documentation sources',
   {},
   async ({}) => {
-    const [name, url] = honoDocsList.split(/:(.+)/);
-    const sources = [
-      {
-        name,
-        url,
-      },
-    ];
+    const sources = docSources.map(({ name, url, description }) => ({
+      name,
+      url,
+      description,
+    }));
 
     return {
       content: [
         {
           type: 'text',
           text: sources
-            .map(({ name, url }) => `${name}: URL:${url}`)
+            .map(
+              ({ name, url, description }) =>
+                `${name}: URL:${url}${description ? ` - ${description}` : ''}`
+            )
             .join('\n'),
         },
       ],

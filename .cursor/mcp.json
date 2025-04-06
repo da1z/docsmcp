@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "docs-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "tsx ./src/main.ts",
+        "'--source=Model Context Protocol (MCP)|https://modelcontextprotocol.io/llms-full.txt'"
+      ]
+    }
+  }
+}
