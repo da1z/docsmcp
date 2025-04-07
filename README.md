@@ -14,25 +14,15 @@ npm install -g docsmcp
 pnpm add -g docsmcp
 ```
 
-## Usage
+### Using with Cursor
 
-Launch the MCP server with documentation sources specified as arguments:
-
-```bash
-docsmcp --source="Name|Location|Description"
-```
-
-Where:
-
-- `Name`: The identifier for the documentation source
-- `Location`: A file path or URL where the documentation is located
-- `Description`: (Optional) A brief description of the documentation
-
-Example:
+You can use DocsMCP directly with Cursor IDE using npx without installation:
 
 ```bash
-docsmcp --source="Express|https://expressjs.com/en/api.html|Express.js API documentation" --source="LocalDocs|./docs/api.md|Project API documentation"
+npx -y docsmcp '--source=Model Context Protocol (MCP)|https://modelcontextprotocol.io/llms-full.txt'
 ```
+
+This example loads the MCP documentation for use by LLMs within Cursor.
 
 ## Available Tools
 
