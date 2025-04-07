@@ -2,13 +2,23 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
+import fs from 'fs/promises';
+import path from 'path';
 
-// Define the type for documentation sources
 interface DocSource {
   name: string;
-  url: string;
+  location: string;
   description: string;
 }
+
+const isUrl = (str: string): boolean => {
+  try {
+    new URL(str);
+    return str.startsWith('http://') || str.startsWith('https://');
+  } catch {
+    return false;
+  }
+};
 
 const args = process.argv;
 const docSources: DocSource[] = [];
@@ -16,11 +26,19 @@ args.forEach((arg) => {
   if (arg.startsWith('--source=')) {
     const sourceValue = arg.replace('--source=', '');
 
-    const [name, url, description = ''] = sourceValue.split('|');
-    if (!name || !url) {
+    const [name, location, description = ''] = sourceValue.split('|');
+    if (!name || !location) {
       throw new Error('Invalid source format ' + sourceValue);
     }
-    docSources.push({ name, url, description });
+
+    // Determine if location is a URL or file path
+    const isLocalFile = !isUrl(location);
+
+    docSources.push({
+      name,
+      location,
+      description,
+    });
   }
 });
 
@@ -34,9 +52,9 @@ server.tool(
   'Provides a list of available documentation sources',
   {},
   async ({}) => {
-    const sources = docSources.map(({ name, url, description }) => ({
+    const sources = docSources.map(({ name, location, description }) => ({
       name,
-      url,
+      location,
       description,
     }));
 
@@ -46,8 +64,10 @@ server.tool(
           type: 'text',
           text: sources
             .map(
-              ({ name, url, description }) =>
-                `${name}: URL:${url}${description ? ` - ${description}` : ''}`
+              ({ name, location, description }) =>
+                `${name}: ${isUrl(location) ? 'File:' : 'URL:'}${location}${
+                  description ? ` - ${description}` : ''
+                }`
             )
             .join('\n'),
         },
@@ -58,14 +78,34 @@ server.tool(
 
 server.tool(
   'getDocumentation',
-  `Fetch and parse documentation from a given URL.
+  `Fetch and parse documentation from a given URL or local file path.
   `,
   {
-    url: z.string().url().describe('The URL to fetch the documentation from'),
+    url: z
+      .string()
+      .describe('The URL or file path to fetch the documentation from'),
   },
   async ({ url }) => {
-    const response = await fetch(url);
-    const text = await response.text();
+    let text;
+
+    if (isUrl(url)) {
+      const response = await fetch(url);
+      text = await response.text();
+    } else {
+      try {
+        const filePath = path.resolve(url);
+        text = await fs.readFile(filePath, 'utf-8');
+      } catch (error: any) {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `Error reading local file: ${error.message}`,
+            },
+          ],
+        };
+      }
+    }
 
     return {
       content: [
