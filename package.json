@@ -1,9 +1,9 @@
 {
   "name": "docsmcp",
   "version": "0.0.2",
-  "description": "An example of a MCP server",
+  "description": "MCP server to provide documentation to LLMs",
   "bin": {
-    "docsmcp": "./dist/main.js"
+    "docsmcp": "dist/main.js"
   },
   "files": [
     "dist"
