@@ -14,15 +14,28 @@ npm install -g docsmcp
 pnpm add -g docsmcp
 ```
 
-### Using with Cursor
+## Usage
 
-You can use DocsMCP directly with Cursor IDE using npx without installation:
+### Cursor MCP Configuration
 
-```bash
-npx -y docsmcp '--source=Model Context Protocol (MCP)|https://modelcontextprotocol.io/llms-full.txt'
+You can also configure DocsMCP in your Cursor project by creating a `.cursor/mcp.json` file:
+
+```json
+{
+  "mcpServers": {
+    "docs-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "docsmcp",
+        "'--source=Model Context Protocol (MCP)|https://modelcontextprotocol.io/llms-full.txt'"
+      ]
+    }
+  }
+}
 ```
 
-This example loads the MCP documentation for use by LLMs within Cursor.
+This configuration allows Cursor AI to use the documentation MCP server automatically when you open your project.
 
 ## Available Tools
 
