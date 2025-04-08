@@ -26,7 +26,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/da1z/docsmcp"
+    "url": "git+https://github.com/da1z/docsmcp.git"
   },
   "publishConfig": {
     "access": "public"
