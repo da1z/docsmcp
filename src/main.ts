@@ -31,9 +31,6 @@ args.forEach((arg) => {
       throw new Error('Invalid source format ' + sourceValue);
     }
 
-    // Determine if location is a URL or file path
-    const isLocalFile = !isUrl(location);
-
     docSources.push({
       name,
       location,
@@ -65,7 +62,7 @@ server.tool(
           text: sources
             .map(
               ({ name, location, description }) =>
-                `${name}: ${isUrl(location) ? 'File:' : 'URL:'}${location}${
+                `${name}: ${isUrl(location) ? 'URL: ' : 'File: '}${location}${
                   description ? ` - ${description}` : ''
                 }`
             )
