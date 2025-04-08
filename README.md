@@ -34,6 +34,28 @@ This configuration allows Cursor AI to use the documentation MCP server automati
 When specifying a source that contains spaces, ensure to wrap the entire string in quotes. For example:
 '--source=Model Context Protocol (MCP)|https://modelcontextprotocol.io/llms-full.txt'
 
+### VS Code MCP Configuration
+
+You can configure DocsMCP in VS Code by adding a configuration to your `.vscode/mcp.json` file:
+
+```json
+{
+  "servers": {
+    "documentation-mcp-server": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "docsmcp",
+        "--source=Model Context Protocol (MCP)|https://modelcontextprotocol.io/llms-full.txt"
+      ]
+    }
+  }
+}
+```
+
+This configuration allows VS Code extensions that support MCP to use the documentation server automatically.
+
 ## Available Tools
 
 The MCP server provides two main tools:
