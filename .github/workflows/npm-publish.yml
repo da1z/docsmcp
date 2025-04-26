@@ -1,0 +1,36 @@
+name: NPM Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version type to publish'
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+        default: 'patch'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Bump version
+        run: |
+          npm version ${{ github.event.inputs.version_type }} --no-git-tag-version
+          VERSION=$(node -p "require('./package.json').version")
+          echo "New version: $VERSION"
+
+      - name: Publish to NPM
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
