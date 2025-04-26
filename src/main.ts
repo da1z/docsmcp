@@ -45,8 +45,8 @@ const server = new McpServer({
 });
 
 server.tool(
-  'getDocumentationSources',
-  'Provides a list of available documentation sources',
+  'get_documentation_sources',
+  'Provides a list of available documentation sources.',
   {},
   async ({}) => {
     const sources = docSources.map(({ name, location, description }) => ({
@@ -74,8 +74,8 @@ server.tool(
 );
 
 server.tool(
-  'getDocumentation',
-  `Fetch and parse documentation from a given URL or local file path.
+  'get_documentation',
+  `Before using this tool you have to use get_documentation_sources to get the list of available documentation sources.
   `,
   {
     url: z
