@@ -1,6 +1,6 @@
 {
   "name": "docsmcp",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "MCP server to provide documentation to LLMs",
   "bin": {
     "docsmcp": "dist/main.js"
