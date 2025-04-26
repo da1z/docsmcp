@@ -18,24 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
-
-      - name: Bump version
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          npm version ${{ github.event.inputs.version_type }}
-          VERSION=$(node -p "require('./package.json').version")
-          echo "New version: $VERSION"
-          git push origin HEAD:${{ github.ref }}
-
-      - name: Publish to NPM
-        run: npm publish --access public
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm version ${{ github.event.inputs.version_type }}
+      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
