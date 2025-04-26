@@ -62,7 +62,7 @@ server.tool(
           text: sources
             .map(
               ({ name, location, description }) =>
-                `${name}: ${isUrl(location) ? 'URL: ' : 'File: '}${location}${
+                `${name}: ${isUrl(location) ? 'URL - ' : 'File - '}${location}${
                   description ? ` - ${description}` : ''
                 }`
             )
